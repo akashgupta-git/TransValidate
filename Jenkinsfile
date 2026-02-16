@@ -4,7 +4,6 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // This step automatically clones your code from GitHub
                 checkout scm
             }
         }
@@ -16,39 +15,34 @@ pipeline {
                     sshPublisher(
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'AWS-EC2', // MUST match the name you set in Manage Jenkins -> System
+                                configName: 'AWS-EC2',
                                 transfers: [
                                     sshTransfer(
                                         cleanRemote: false,
                                         remoteDirectory: '',
                                         execCommand: '''
-                                            # 1. Stop existing container
-                                            echo "Stopping old container..."
-                                            sudo docker stop $(sudo docker ps -q --filter ancestor=transvalidate:v1) || true
-                                            
-                                            # 2. Remove stopped container
+                                            # 1. Force remove the old container by name (if it exists)
                                             echo "Removing old container..."
-                                            sudo docker rm $(sudo docker ps -aq --filter ancestor=transvalidate:v1) || true
+                                            sudo docker rm -f transvalidate-app || true
                                             
-                                            # 3. Remove old image to free space
-                                            echo "Removing old image..."
+                                            # 2. Remove old image (optional, saves space)
                                             sudo docker rmi transvalidate:v1 || true
                                             
-                                            # 4. Remove old code folder to ensure a fresh clone
+                                            # 3. Clean up old code
                                             rm -rf TransValidate
                                             
-                                            # 5. Clone fresh code
+                                            # 4. Clone fresh code
                                             echo "Cloning new code..."
                                             git clone https://github.com/akashgupta-git/TransValidate.git
                                             cd TransValidate
                                             
-                                            # 6. Build new Docker image
+                                            # 5. Build new image
                                             echo "Building Docker image..."
                                             sudo docker build -t transvalidate:v1 .
                                             
-                                            # 7. Run new container
+                                            # 6. Run new container with a FIXED NAME
                                             echo "Starting new container..."
-                                            sudo docker run -d -p 80:5002 transvalidate:v1
+                                            sudo docker run -d --name transvalidate-app -p 80:5002 transvalidate:v1
                                         '''
                                     )
                                 ],
