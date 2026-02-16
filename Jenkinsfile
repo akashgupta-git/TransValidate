@@ -2,6 +2,13 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                // This step automatically clones your code from GitHub
+                checkout scm
+            }
+        }
+        
         stage('Deploy to AWS') {
             steps {
                 script {
@@ -9,7 +16,7 @@ pipeline {
                     sshPublisher(
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'AWS-EC2', // MUST match the name in Manage Jenkins -> System
+                                configName: 'AWS-EC2', // MUST match the name you set in Manage Jenkins -> System
                                 transfers: [
                                     sshTransfer(
                                         cleanRemote: false,
@@ -27,7 +34,7 @@ pipeline {
                                             echo "Removing old image..."
                                             sudo docker rmi transvalidate:v1 || true
                                             
-                                            # 4. Remove old code folder
+                                            # 4. Remove old code folder to ensure a fresh clone
                                             rm -rf TransValidate
                                             
                                             # 5. Clone fresh code
@@ -35,7 +42,7 @@ pipeline {
                                             git clone https://github.com/akashgupta-git/TransValidate.git
                                             cd TransValidate
                                             
-                                            # 6. Build new image
+                                            # 6. Build new Docker image
                                             echo "Building Docker image..."
                                             sudo docker build -t transvalidate:v1 .
                                             
