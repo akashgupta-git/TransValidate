@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "TransValidate is running!"
+    return "Akash is running!"
 
 @app.route('/health')
 def health():

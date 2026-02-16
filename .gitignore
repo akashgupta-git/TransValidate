@@ -5,4 +5,12 @@ venv/
 .DS_Store
 node_modules/
 package-lock.json
-package.json
+package.json# Terraform binaries (HUGE files)
+.terraform/
+terraform/.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Mac system junk files
+._*
+.DS_Store
