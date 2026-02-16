@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return " is running!"
+    return "Jenkins is running!"
 
 @app.route('/health')
 def health():
