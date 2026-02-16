@@ -15,3 +15,5 @@ terraform/.terraform/
 ._*
 .DS_Store
 transvalidate-key.pem
+.terraform/
+terraform/.terraform/
