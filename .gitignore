@@ -14,3 +14,4 @@ terraform/.terraform/
 # Mac system junk files
 ._*
 .DS_Store
+transvalidate-key.pem
