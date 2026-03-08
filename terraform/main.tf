@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "ap-south-1"
+  region = var.region
 }
 
 # This automatically fetches the latest Ubuntu 22.04 AMI ID for Mumbai
@@ -100,7 +100,7 @@ resource "aws_security_group" "allow_web" {
 # 6. The Server (EC2 Instance)
 resource "aws_instance" "app_server" {
   ami           = data.aws_ami.ubuntu.id 
-  instance_type = "t2.micro"
+  instance_type = var.instance_type
   subnet_id     = aws_subnet.main_subnet.id
   vpc_security_group_ids = [aws_security_group.allow_web.id]
   key_name = "transvalidate-key"

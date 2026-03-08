@@ -1,19 +1,29 @@
+# Python
 __pycache__/
+*.pyc
+*.pyo
 venv/
 .env
-*.pyc
-.DS_Store
-node_modules/
-package-lock.json
-package.json# Terraform binaries (HUGE files)
-.terraform/
-terraform/.terraform/
+*.db
+
+# Terraform
 *.tfstate
 *.tfstate.backup
-
-# Mac system junk files
-._*
-.DS_Store
-transvalidate-key.pem
 .terraform/
 terraform/.terraform/
+.terraform.lock.hcl
+
+# Keys
+transvalidate-key.pem
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+._*
+
+# Node (not needed)
+node_modules/
+package-lock.json
